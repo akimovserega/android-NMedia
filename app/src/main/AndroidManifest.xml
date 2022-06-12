@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NMedia">
         <activity
+            android:name=".PostList"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
