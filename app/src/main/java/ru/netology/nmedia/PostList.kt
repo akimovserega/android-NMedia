@@ -7,5 +7,7 @@ class PostList : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.post_list)
+
+
     }
 }
