@@ -44,4 +44,11 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    def lifestyle_version = "2.4.1"
+    //view Model
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifestyle_version"
+    //live data
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifestyle_version"
+    implementation "androidx.activity:activity-ktx:1.4.0"
 }
