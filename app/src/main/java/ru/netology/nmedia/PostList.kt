@@ -6,73 +6,56 @@ import android.text.format.DateFormat
 import android.text.format.DateUtils
 import android.widget.DatePicker
 import android.widget.ImageButton
+import androidx.activity.viewModels
 import androidx.annotation.DrawableRes
 import ru.netology.nmedia.data.Post
 import ru.netology.nmedia.databinding.ActivityMainBinding
 import ru.netology.nmedia.databinding.PostListBinding
+import ru.netology.nmedia.viewModel.PostViewModel
 import java.lang.Math.pow
 import kotlin.math.floor
 import kotlin.math.pow
 import kotlin.math.round
 
 class PostList : AppCompatActivity() {
+
+    private val viewModel by viewModels<PostViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         val binding = PostListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val post = Post(
-            id = 1L,
-            author = getString(R.string.nameOfAuthor),
-            content = getString(R.string.messageOfPost),
-            published = getString(R.string.dateOfPost),
-            likes = 999,
-            shares = 9998,
-            views = 1_100_000
-        )
+        viewModel.data.observe(this) { post ->
+            binding.render(post)
+        }
 
         with(binding) {
-
-            render(post)
-            update(post)
-
             likeButton.setOnClickListener {
-                if (post.likedByMe) {
-                    post.likes--
-                } else {
-                    post.likes++
-                }
-                post.likedByMe = !post.likedByMe
-
-                update(post)
-                likeButton.setImageResource(getlikeButtonImageId(post.likedByMe))
+                viewModel.onLikeClicked()
             }
 
             shareButton.setOnClickListener {
-
-                post.shares++
-                update(post)
+                viewModel.onShareClicked()
             }
         }
     }
+
 
     private fun PostListBinding.render(post: Post) {
         authorName.text = post.author
         postMessage.text = post.content
         postDate.text = post.published
-        likeButton.setImageResource(getlikeButtonImageId(post.likedByMe))
-    }
-
-    private fun PostListBinding.update(post: Post) {
+        likeButton.setImageResource(getLikeButtonImageId(post.likedByMe))
         likesAmount.text = numToFormatString(post.likes)
         sharesAmount.text = numToFormatString(post.shares)
         viewsAmount.text = numToFormatString(post.views)
     }
 
+
     @DrawableRes
-    private fun getlikeButtonImageId(liked: Boolean) =
+    private fun getLikeButtonImageId(liked: Boolean) =
         if (liked) R.drawable.ic_favorite_24 else R.drawable.ic_favorite_border_24
 }
 
@@ -100,7 +83,7 @@ fun numToFormatString(count: Int): String {
             val decimal =
                 floor((count % 1000.0.pow(degree)) / (100 * 1000.0.pow(degree - 1))).toInt()
             if (decimal > 0) {
-                resultString += ".${decimal.toString()}"
+                resultString += ".$decimal"
             }
         }
     }
