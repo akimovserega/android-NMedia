@@ -2,9 +2,6 @@
     <string name="app_name">NMedia</string>
     <string name="hello">NMedia!</string>
     <string name="avatar_description">Author avatar</string>
-    <string name="numOfLikes" translatable="false">10</string>
-    <string name="numOfShares" translatable="false">5</string>
-    <string name="numOfViews" translatable="false">5</string>
     <string name="option">Options</string>
     <string name="toLike">Add to favorite</string>
     <string name="toShare">Share</string>
