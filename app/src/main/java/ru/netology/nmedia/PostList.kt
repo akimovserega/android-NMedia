@@ -2,23 +2,13 @@ package ru.netology.nmedia
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.format.DateFormat
-import android.text.format.DateUtils
-import android.widget.DatePicker
-import android.widget.ImageButton
 import androidx.activity.viewModels
-import androidx.annotation.DrawableRes
 import ru.netology.nmedia.adapter.PostsAdapter
-import ru.netology.nmedia.data.Post
-import ru.netology.nmedia.databinding.ActivityMainBinding
-import ru.netology.nmedia.databinding.PostBinding
 import ru.netology.nmedia.databinding.PostListBinding
-
 import ru.netology.nmedia.viewModel.PostViewModel
-import java.lang.Math.pow
 import kotlin.math.floor
 import kotlin.math.pow
-import kotlin.math.round
+
 
 class PostList : AppCompatActivity() {
 
