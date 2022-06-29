@@ -6,5 +6,12 @@
     <string name="toLike">Add to favorite</string>
     <string name="toShare">Share</string>
     <string name="toView">See views</string>
+    <string name="remove">Remove</string>
+    <string name="post_text">Enter text</string>
+    <string name="toSave">Save</string>
+    <string name="toCancel">Cancel</string>
+    <string name="edit">Edit</string>
+    <string name="toEmoji">Add emoji</string>
+    <string name="editTitle">Edit Message</string>
 
 </resources>

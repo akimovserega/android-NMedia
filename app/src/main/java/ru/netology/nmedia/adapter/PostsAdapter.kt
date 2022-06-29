@@ -2,6 +2,7 @@ package ru.netology.nmedia.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,23 +14,41 @@ import ru.netology.nmedia.*
 typealias onListener = (Post) -> Unit
 
 class PostsAdapter(
-    private val onLikeClicked: onListener,
-    private val onShareClicked: onListener
+    private val interactionListeners: PostListeners
 
 ) : ListAdapter<Post, PostsAdapter.ViewHolder>(DiffCallback) {
 
 
     class ViewHolder(
         private val binding: PostBinding,
-        private val onLikeClicked: onListener,
-        private val onShareClicked: onListener
+        listener: PostListeners
+
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var post: Post
+        private val popupMenu by lazy {
+            PopupMenu(itemView.context, binding.optionButton).apply {
+                inflate(R.menu.option)
+                setOnMenuItemClickListener { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.remove -> {
+                            listener.onDeleteClicked(post)
+                            true
+                        }
+                        R.id.edit -> {
+                            listener.onEditClicked(post)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            }
+        }
+
 
         init {
-            binding.likeButton.setOnClickListener { onLikeClicked(post) }
-            binding.shareButton.setOnClickListener { onShareClicked(post) }
+            binding.likeButton.setOnClickListener { listener.onLikeClicked(post) }
+            binding.shareButton.setOnClickListener { listener.onShareClicked(post) }
         }
 
         fun bind(post: Post) {
@@ -43,6 +62,8 @@ class PostsAdapter(
                 likesAmount.text = numToFormatString(post.likes)
                 sharesAmount.text = numToFormatString(post.shares)
                 viewsAmount.text = numToFormatString(post.views)
+                optionButton.setOnClickListener { popupMenu.show() }
+
             }
         }
 
@@ -54,7 +75,7 @@ class PostsAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = PostBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding, onLikeClicked, onShareClicked)
+        return ViewHolder(binding, interactionListeners)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

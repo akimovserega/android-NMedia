@@ -7,4 +7,11 @@
     <string name="toLike">Поставить лайк</string>
     <string name="toShare">Поделиться</string>
     <string name="toView">Просмотры</string>
+    <string name="remove">Удалить</string>
+    <string name="post_text">Введите текст</string>
+    <string name="toSave">Сохранить</string>
+    <string name="toCancel">Отменить</string>
+    <string name="edit">Редактировать</string>
+    <string name="toEmoji">Добавить смайлик</string>
+    <string name="editTitle">Редактировать</string>
 </resources>
