@@ -12,6 +12,8 @@ class InMemoryPostRepository : PostRepository {
             data.value = value
         }
 
+    private var nextId = POSTS_AMOUNT.toLong()
+
     override val data: MutableLiveData<List<Post>>
 
     init {
@@ -94,5 +96,30 @@ class InMemoryPostRepository : PostRepository {
             else post
         }
 
+    }
+
+    override fun delete(postId: Long) {
+        posts = posts.filterNot {
+            it.id == postId
+        }
+    }
+
+    override fun save(post: Post) {
+        if (post.id == PostRepository.NEW_POST_ID) insert(post) else update(post)
+
+    }
+
+    private fun update(post: Post) {
+        posts = posts.map {
+            if (it.id == post.id) post else it
+        }
+    }
+
+    private fun insert(post: Post) {
+        posts = listOf(post.copy(id = ++nextId)) + posts
+    }
+
+    private companion object {
+        const val POSTS_AMOUNT = 10
     }
 }
