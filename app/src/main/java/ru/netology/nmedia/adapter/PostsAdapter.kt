@@ -58,17 +58,14 @@ class PostsAdapter(
                 authorName.text = post.author
                 postMessage.text = post.content
                 postDate.text = post.published
-                likeButton.setImageResource(getLikeButtonImageId(post.likedByMe))
-                likesAmount.text = numToFormatString(post.likes)
-                sharesAmount.text = numToFormatString(post.shares)
-                viewsAmount.text = numToFormatString(post.views)
+                likeButton.text = numToFormatString(post.likes)
+                likeButton.isChecked = post.likedByMe
+                shareButton.text = numToFormatString(post.shares)
+                viewButton.text = numToFormatString(post.views)
                 optionButton.setOnClickListener { popupMenu.show() }
 
             }
         }
-
-        private fun getLikeButtonImageId(liked: Boolean) =
-            if (liked) R.drawable.ic_favorite_24 else R.drawable.ic_favorite_border_24
 
     }
 
