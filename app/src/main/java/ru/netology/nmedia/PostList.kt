@@ -1,5 +1,7 @@
 package ru.netology.nmedia
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -28,34 +30,42 @@ class PostList : AppCompatActivity() {
         viewModel.data.observe(this) { posts ->
             adapter.submitList(posts)
         }
-        with(binding.editText) {
-            binding.saveButton.setOnClickListener {
-                val content = text.toString()
-                viewModel.onSaveClicked(content)
-                binding.groupEdit.visibility = View.GONE
-            }
-            binding.cancelButton.setOnClickListener {
-                viewModel.onCancelClicked()
-                text = null
-                binding.groupEdit.visibility = View.GONE
-            }
 
+
+        viewModel.shareEvent.observe(this) { post ->
+            val intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, post.content)
+            }
+            val shareIntent = Intent.createChooser(intent, getString(R.string.toShare))
+            startActivity(shareIntent)
         }
+
+        viewModel.playEvent.observe(this) { post ->
+            val playIntent = Intent(Intent.ACTION_VIEW, Uri.parse(post.video))
+            startActivity(playIntent)
+        }
+
+
+        val activityLauncher = registerForActivityResult(
+            ActivityNewPost.ResultContract
+        ) { postContent: String? ->
+            postContent?.let {
+                (viewModel::onCreateNewPost)(postContent)
+            }
+        }
+        binding.editButton.setOnClickListener {
+            activityLauncher.launch(null)
+        }
+
+
+
         viewModel.currentPost.observe(this) { currentPost ->
-            with(binding.editText) {
-                val content = currentPost?.content
-                setText(content)
-                binding.postEditMessage.text = content
-
-                if (content != null) {
-                    requestFocus()
-                    binding.groupEdit.visibility = View.VISIBLE
-
-                } else {
-                    clearFocus()
-                    hideKeyboard()
-                }
-
+            val content = currentPost?.content
+            if (content != null) {
+                activityLauncher.launch(content)
+            } else {
             }
         }
     }

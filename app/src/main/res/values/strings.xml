@@ -13,5 +13,9 @@
     <string name="edit">Edit</string>
     <string name="toEmoji">Add emoji</string>
     <string name="editTitle">Edit Message</string>
+    <string name="done">Done</string>
+    <string name="toCreate">Create</string>
+    <string name="warnEmptyText">The text is empty</string>
+    <string name="toPlay">Play</string>
 
 </resources>

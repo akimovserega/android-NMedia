@@ -14,4 +14,8 @@
     <string name="edit">Редактировать</string>
     <string name="toEmoji">Добавить смайлик</string>
     <string name="editTitle">Редактировать</string>
+    <string name="done">Готово</string>
+    <string name="toCreate">Создать пост</string>
+    <string name="warnEmptyText">Переданный текст пустой</string>
+    <string name="toPlay">Воспроизвести</string>
 </resources>
