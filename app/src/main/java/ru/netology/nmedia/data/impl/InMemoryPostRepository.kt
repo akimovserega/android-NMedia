@@ -32,7 +32,8 @@ class InMemoryPostRepository : PostRepository {
                 likes = 999,
                 shares = 9998,
                 views = 1_100_000,
-                likedByMe = true
+                likedByMe = true,
+                video = "https://www.youtube.com/watch?v=WhWc3b3KhnY"
             ),
             Post(
                 id = 2L,

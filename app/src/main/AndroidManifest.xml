@@ -10,6 +10,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NMedia">
         <activity
+            android:name=".ActivityNewPost"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".ShareActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".PostList"
             android:exported="false" />
         <activity
