@@ -1,24 +1,46 @@
 package ru.netology.nmedia.data.impl
 
+import android.app.Application
+import android.content.Context
+import androidx.core.content.edit
 import androidx.lifecycle.MutableLiveData
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import ru.netology.nmedia.data.Post
 import ru.netology.nmedia.data.PostRepository
+import kotlin.properties.Delegates
 
-class InMemoryPostRepository : PostRepository {
+class SharedPrefPostRepository(application: Application) : PostRepository {
+
+
+    private val prefs = application.getSharedPreferences(
+        "repo", Context.MODE_PRIVATE
+    )
+
+    private var nextId by Delegates.observable(
+        prefs.getLong(POSTS_NEXT_ID_PREFS_KEY, 0L)
+
+    ) { _, _, newValue ->
+        prefs.edit { putLong(POSTS_NEXT_ID_PREFS_KEY, newValue) }
+
+    }
 
     private var posts
         get() = checkNotNull(data.value)
         set(value) {
 
-
+            prefs.edit {
+                val serializedPosts = Json.encodeToString(value)
+                putString(POSTS_PREFS_KEY, serializedPosts)
+            }
             data.value = value
         }
-
-    private var nextId = POSTS_AMOUNT.toLong()
 
     override val data: MutableLiveData<List<Post>>
 
     init {
+
         val examplePosts = listOf(
             Post(
                 id = 1L,
@@ -77,7 +99,13 @@ class InMemoryPostRepository : PostRepository {
             )
 
         )
-        data = MutableLiveData(examplePosts)
+
+        val serializedPosts = prefs.getString(POSTS_PREFS_KEY, null)
+        val posts: List<Post> = if (serializedPosts != null) {
+            Json.decodeFromString(serializedPosts)
+        } else examplePosts
+
+        data = MutableLiveData(posts)
 
     }
 
@@ -123,6 +151,7 @@ class InMemoryPostRepository : PostRepository {
     }
 
     private companion object {
-        const val POSTS_AMOUNT = 10
+        const val POSTS_PREFS_KEY = "posts"
+        const val POSTS_NEXT_ID_PREFS_KEY = "posts"
     }
 }

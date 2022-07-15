@@ -1,24 +1,49 @@
 package ru.netology.nmedia.data.impl
 
+import android.app.Application
+import android.content.Context
+import androidx.core.content.edit
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import ru.netology.nmedia.data.Post
 import ru.netology.nmedia.data.PostRepository
+import kotlin.properties.Delegates
 
-class InMemoryPostRepository : PostRepository {
+class FilePostRepository(private val application: Application) : PostRepository {
+
+    private val gson = Gson()
+    private val type = TypeToken.getParameterized(List::class.java, Post::class.java).type
+
+    private val prefs = application.getSharedPreferences(
+        "repo", Context.MODE_PRIVATE
+    )
+
+    private var nextId by Delegates.observable(
+        prefs.getLong(POSTS_NEXT_ID_PREFS_KEY, 10L)
+
+    ) { _, _, newValue ->
+        prefs.edit { putLong(POSTS_NEXT_ID_PREFS_KEY, newValue) }
+
+    }
 
     private var posts
         get() = checkNotNull(data.value)
         set(value) {
 
-
+            application.openFileOutput(FILE_NAME, Context.MODE_PRIVATE).bufferedWriter().use {
+                it.write(gson.toJson(value))
+            }
             data.value = value
         }
-
-    private var nextId = POSTS_AMOUNT.toLong()
 
     override val data: MutableLiveData<List<Post>>
 
     init {
+
         val examplePosts = listOf(
             Post(
                 id = 1L,
@@ -77,7 +102,22 @@ class InMemoryPostRepository : PostRepository {
             )
 
         )
-        data = MutableLiveData(examplePosts)
+        val postsFile = application.filesDir.resolve(FILE_NAME)
+        val posts: List<Post> = if (postsFile.exists()) {
+            val inputStream = application.openFileInput(FILE_NAME)
+            val reader = inputStream.bufferedReader()
+            reader.use {
+                gson.fromJson(it, type)
+            }
+        } else examplePosts
+
+        val lastId = posts.maxByOrNull { it.id }?.id
+        if (lastId != null) {
+            if (lastId > nextId) nextId = lastId
+        }
+
+
+        data = MutableLiveData(posts)
 
     }
 
@@ -123,6 +163,7 @@ class InMemoryPostRepository : PostRepository {
     }
 
     private companion object {
-        const val POSTS_AMOUNT = 10
+        const val POSTS_NEXT_ID_PREFS_KEY = "posts"
+        const val FILE_NAME = "posts.Json"
     }
 }
