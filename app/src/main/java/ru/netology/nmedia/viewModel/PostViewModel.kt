@@ -22,7 +22,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application), P
     val shareEvent = SingleLiveEvent<Post>()
     val playEvent = SingleLiveEvent<Post>()
     val tapEvent = SingleLiveEvent<Long>()
-    val addEvent = SingleLiveEvent<String>()
+    val addEvent = SingleLiveEvent<String?>()
 
 
     override fun onLikeClicked(post: Post) = repository.like(post.id)
