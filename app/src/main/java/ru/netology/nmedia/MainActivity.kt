@@ -12,9 +12,9 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-    fun openPostList(view: View) {
+/*    fun openPostList(view: View) {
         val intent = Intent(this, PostList::class.java)
         startActivity(intent)
-    }
+    }*/
     
 }
