@@ -8,4 +8,5 @@ interface PostListeners {
     fun onDeleteClicked(post: Post)
     fun onEditClicked(post: Post)
     fun onPlayClicked(post: Post)
+    fun onPostClicked(post: Post)
 }

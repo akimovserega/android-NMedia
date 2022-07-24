@@ -18,9 +18,12 @@ class PostViewModel(application: Application) : AndroidViewModel(application), P
     val data by repository::data
 
 
-    val currentPost = MutableLiveData<Post?>(null)
+    private val currentPost = MutableLiveData<Post?>(null)
     val shareEvent = SingleLiveEvent<Post>()
     val playEvent = SingleLiveEvent<Post>()
+    val tapEvent = SingleLiveEvent<Long>()
+    val addEvent = SingleLiveEvent<String?>()
+
 
     override fun onLikeClicked(post: Post) = repository.like(post.id)
     override fun onShareClicked(post: Post) {
@@ -31,11 +34,16 @@ class PostViewModel(application: Application) : AndroidViewModel(application), P
     override fun onDeleteClicked(post: Post) = repository.delete(post.id)
     override fun onEditClicked(post: Post) {
         currentPost.value = post
+        addEvent.value = post.content
     }
 
 
     override fun onPlayClicked(post: Post) {
         playEvent.value = post
+    }
+
+    override fun onPostClicked(post: Post) {
+        tapEvent.value = post.id
     }
 
     fun onCreateNewPost(content: String) {
@@ -50,6 +58,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application), P
         )
         repository.save(post)
         currentPost.value = null
+    }
+
+    fun onAddClicked() {
+        addEvent.value = null
     }
 
 }

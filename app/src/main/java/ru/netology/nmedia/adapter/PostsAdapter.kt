@@ -12,8 +12,6 @@ import ru.netology.nmedia.databinding.PostBinding
 import ru.netology.nmedia.numToFormatString
 import ru.netology.nmedia.*
 
-typealias onListener = (Post) -> Unit
-
 class PostsAdapter(
     private val interactionListeners: PostListeners
 
@@ -52,6 +50,7 @@ class PostsAdapter(
             binding.shareButton.setOnClickListener { listener.onShareClicked(post) }
             binding.videoScreen.setOnClickListener { listener.onPlayClicked(post) }
             binding.playButton.setOnClickListener { listener.onPlayClicked(post) }
+            binding.postMessage.setOnClickListener { listener.onPostClicked(post) }
         }
 
         fun bind(post: Post) {

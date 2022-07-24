@@ -9,10 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NMedia">
-        <activity
-            android:name=".ActivityNewPost"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+
         <activity
             android:name=".ShareActivity"
             android:exported="true">
@@ -24,12 +21,12 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".PostList"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".AppActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
