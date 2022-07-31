@@ -11,10 +11,14 @@ import ru.netology.nmedia.data.Post
 import ru.netology.nmedia.data.PostRepository
 import ru.netology.nmedia.data.impl.FilePostRepository
 import ru.netology.nmedia.data.impl.InMemoryPostRepository
+import ru.netology.nmedia.data.impl.SQLiteRepository
 import ru.netology.nmedia.data.impl.SharedPrefPostRepository
+import ru.netology.nmedia.db.AppDb
 
 class PostViewModel(application: Application) : AndroidViewModel(application), PostListeners {
-    private val repository: PostRepository = FilePostRepository(application)
+    private val repository: PostRepository = SQLiteRepository(
+        dao = AppDb.getInstance(context = application).postDao
+    )
     val data by repository::data
 
 
