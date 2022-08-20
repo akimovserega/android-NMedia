@@ -4,6 +4,7 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.6.21'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -61,5 +62,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.0'
     implementation "androidx.room:room-runtime:2.4.3"
     kapt "androidx.room:room-compiler:2.4.3"
+
+    implementation platform('com.google.firebase:firebase-bom:30.3.1')
+    implementation "com.google.firebase:firebase-messaging-ktx"
 
 }
